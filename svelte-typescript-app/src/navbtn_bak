@@ -1,0 +1,43 @@
+<script lang="ts">
+    export let btnId = "none";
+    export let text = "none";
+    export let selected = false;
+    export let imgSrc = "none";
+    export let imgAlt = "none";
+    const changeBtnState = () => {(selected) ? (selected = false) : selected = true};
+</script>
+
+    <div class="navBtn" id={btnId} role="button" on:click={changeBtnState}>
+            <div class="{ (selected) ? 'isSelected' : 'isNotSelected'}"></div>
+                    <h1 id="btnText">{text}</h1>
+    </div>
+
+<style>
+    .btnContentWrapper
+    {
+        justify-content: center;
+        display: grid;
+        grid-template-columns: 0.5fr 1fr;
+    }
+    .navBtn
+    {
+        transition-duration: 0.2s;
+        color: white;
+        cursor: pointer;
+    }
+    .navBtn:hover
+    {
+        transition-duration: 0.2s;
+        color: #ff4444;
+        cursor: pointer;
+    }
+    .isSelected
+    {
+        height: 10%;
+        background-color: #ff4444;
+    }
+    .isNotSelected
+    {
+        height: 10%;
+    }
+</style>

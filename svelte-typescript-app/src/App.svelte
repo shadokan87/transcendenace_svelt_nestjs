@@ -1,0 +1,61 @@
+<script lang="ts">
+	import Nav from './Nav.svelte';
+	import "./common.css";
+	import router from 'page';
+	import Chat from "./pages/chat/chat.svelte"
+	import Leaderboard from './pages/leaderboard/leaderboard.svelte';
+import Play from './pages/play/play.svelte';
+
+	let login = true;
+	const loginUser = () =>{ !login ? (login = true) : (login = false); }
+</script>
+
+{#if login}
+	<div id="appHolder">
+		<div class="navSection">
+			<Nav/>
+		</div>
+		<div class="canvas">
+			<Chat />
+		</div>
+	</div>
+{:else}
+<main>
+<div class="mainPage">
+	<h1 id="title">Transcendance</h1>
+	<img src="./botpong.gif" alt="robot playing ping pong" id="cannyPic">
+		<div class="bigButton" on:click={loginUser} role="button">
+			<h1>
+				Sign in with 42
+			</h1>
+		</div>
+</div>
+</main>
+{/if}
+<style>
+main
+{
+	display: flex;
+	background-color: #2d2d2d;
+	justify-content: center;
+	height: 100vh;
+}
+#title
+{
+	font-family: 'Fredoka One', cursive;
+	color: white;
+	font-size: 3em;
+	text-align: center;
+}
+#appHolder
+{
+	display: grid;
+	grid-template-columns: 0.5fr 8fr;
+	height: 100vh;
+	background-color: #2D2D2D;
+	}
+	.canvas
+	{
+		background-color: grey;
+	}
+</style>
