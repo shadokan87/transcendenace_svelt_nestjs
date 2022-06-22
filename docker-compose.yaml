@@ -1,0 +1,41 @@
+version: '3.7'
+services:
+  db:
+    image: postgres:latest
+    volumes:
+      - "data:/var/lib/postgresql/data"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: PG_PASS
+      POSTGRES_USER: PG_USER
+      POSTGRES_DB: PG_DB
+    restart: always
+    networks:
+      - trans
+  adminer:
+   image: adminer
+   restart: always
+   ports:
+     - 8080:8080
+  svelte:
+      build: svelte/
+      container_name: svelte
+      ports:
+        - 8181:8181
+      volumes:
+        - "${PWD}/svelte/srcs:/home/svelte"
+      networks:
+        - trans
+
+networks:
+  trans:
+
+volumes:
+  data:
+  svelteSrcs:
+    driver: local
+    driver_opts:
+      o: 'bind'
+      type: 'none'
+      device: "/home"

@@ -1,0 +1,29 @@
+<script lang="ts">
+    import NavButton from "./NavButton.svelte";
+</script>
+
+<main>
+    <nav>
+        <div class="navWrapper" role="navigation">
+            <NavButton
+            btnId="playBtn"
+            text="Play"
+            imgSrc="./polygon-border.svg"
+            imAlt="play button"/>
+            <NavButton btnId="chatBtn" text="Chat" />
+            <NavButton btnId="browseBtn" text="Browse" />
+        </div>
+    </nav>
+</main>
+
+<style>
+:global(body){
+    padding: 0;
+    margin: 0;
+}
+.navWrapper {
+display: grid;
+grid-template-columns: 1fr 1fr 1fr 1fr;
+grid-column-gap: 5em;
+}
+</style>
