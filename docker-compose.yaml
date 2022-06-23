@@ -24,7 +24,16 @@ services:
       ports:
         - 8181:8181
       volumes:
-        - "${PWD}/svelte/srcs:/home/svelte"
+        - "svelteDir:/home/svelte"
+      networks:
+        - trans
+  chat-serv:
+      build: back/chat-serv/
+      container_name: chat-serv
+      ports:
+        - 3434:3434
+      volumes:
+        - "chat-servDir:/home/chat-serv"
       networks:
         - trans
 
@@ -33,9 +42,15 @@ networks:
 
 volumes:
   data:
-  svelteSrcs:
+  svelteDir:
     driver: local
     driver_opts:
       o: 'bind'
       type: 'none'
-      device: "/home"
+      device: "${PWD}/svelte/srcs"
+  chat-servDir:
+    driver: local
+    driver_opts:
+      o: 'bind'
+      type: 'none'
+      device: "${PWD}/back/chat-serv/srcs"
