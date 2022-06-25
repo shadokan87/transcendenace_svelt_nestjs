@@ -5,7 +5,5 @@ let bubble = {
 	sender: "motoure"
 };
 </script>
-<ChatBubble {...bubble}/>
-	<ChatBubble {...bubble}/>
 <style>
 </style>

@@ -1,15 +1,15 @@
 version: '3.7'
 services:
-  db:
+  postgres:
     image: postgres:latest
     volumes:
       - "data:/var/lib/postgresql/data"
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_PASSWORD: PG_PASS
-      POSTGRES_USER: PG_USER
-      POSTGRES_DB: PG_DB
+      POSTGRES_PASSWORD: "${PG_PASS}"
+      POSTGRES_USER: "{PG_USER}"
+      POSTGRES_DB: "${PG_DB}"
     restart: always
     networks:
       - trans
@@ -27,13 +27,13 @@ services:
         - "svelteDir:/home/svelte"
       networks:
         - trans
-  chat-serv:
-      build: back/chat-serv/
-      container_name: chat-serv
+  nest:
+      build: nest/
+      container_name: nest
       ports:
         - 3434:3434
       volumes:
-        - "chat-servDir:/home/chat-serv"
+        - "nest:/home/nest"
       networks:
         - trans
 
@@ -48,9 +48,9 @@ volumes:
       o: 'bind'
       type: 'none'
       device: "${PWD}/svelte/srcs"
-  chat-servDir:
+  nest:
     driver: local
     driver_opts:
       o: 'bind'
       type: 'none'
-      device: "${PWD}/back/chat-serv/srcs"
+      device: "${PWD}/nest/srcs"
