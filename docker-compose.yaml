@@ -34,6 +34,7 @@ services:
         - 3434:3434
       volumes:
         - "nest:/home/nest"
+        - "typeorm:/home/typeorm"
       networks:
         - trans
 
@@ -54,3 +55,9 @@ volumes:
       o: 'bind'
       type: 'none'
       device: "${PWD}/nest/srcs"
+  typeorm:
+    driver: local
+    driver_opts:
+      o: 'bind'
+      type: 'none'
+      device: "${PWD}/db"
