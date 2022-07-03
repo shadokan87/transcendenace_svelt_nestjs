@@ -34,9 +34,25 @@ services:
         - 3434:3434
       volumes:
         - "nest:/home/nest"
-        - "typeorm:/home/typeorm"
+        # - "prisma:/home/prisma"
       networks:
         - trans
+  prisma:
+    image: prismagraphql/prisma:1.34
+    restart: always
+    ports:
+      - "4466:4466"
+    environment:
+      PRISMA_CONFIG: |
+        port: "4466"
+        databases:
+          default:
+            connector: "postgresql"
+            migrations: true
+            host: db
+            port: 5432
+            user: "${PG_USER}"
+            password: "${PG_PASS}"
 
 networks:
   trans:
@@ -55,9 +71,9 @@ volumes:
       o: 'bind'
       type: 'none'
       device: "${PWD}/nest/srcs"
-  typeorm:
+  prisma:
     driver: local
     driver_opts:
       o: 'bind'
       type: 'none'
-      device: "${PWD}/db"
+      device: "${PWD}/prisma/srcs"
