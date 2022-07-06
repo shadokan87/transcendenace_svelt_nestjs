@@ -32,7 +32,6 @@ services:
         - 3434:3434
       volumes:
         - "nest:/home/nest"
-        # - "prisma:/home/prisma"
       networks:
         - trans
   prisma:
@@ -44,22 +43,9 @@ services:
         - "prisma:/home/prisma"
       networks:
         - trans
-  # prisma:
-  #   image: prismagraphql/prisma:1.34
-  #   restart: always
-  #   ports:
-  #     - "4466:4466"
-  #   environment:
-  #     PRISMA_CONFIG: |
-  #       port: "4466"
-  #       databases:
-  #         default:
-  #           connector: "postgresql"
-  #           migrations: true
-  #           host: db
-  #           port: 5432
-  #           user: "${PG_USER}"
-  #           password: "${PG_PASS}"
+      depends_on:
+        - "db"
+      restart: always
 
 networks:
   trans:

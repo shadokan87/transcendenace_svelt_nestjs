@@ -21,3 +21,8 @@ USER
 ADMIN
 BAN
 }
+
+enum ChanVisibility {
+PUBLIC
+PRIVATE
+}
