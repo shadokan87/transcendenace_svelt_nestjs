@@ -1,0 +1,7 @@
+<div id="send" role="button" on:click={submitInput}><h2>send</h2></div>
+<input
+	type="text"
+	placeholder={getPlaceHolder()}
+	bind:value={inputValue}
+	id="input"
+	on:keydown={submitInput}/>

@@ -1,24 +1,34 @@
 <script lang="ts">
+	import { Router, Route, Link } from "svelte-navigator";
 	import Nav from './Nav.svelte';
 	import "./common.css";
-	import router from 'page';
 	import Chat from "./pages/chat/chat.svelte"
 	import Leaderboard from './pages/leaderboard/leaderboard.svelte';
-import Play from './pages/play/play.svelte';
+	import Play from './pages/play/play.svelte';
 
 	let login = true;
 	const loginUser = () =>{ !login ? (login = true) : (login = false); }
 </script>
 
 {#if login}
+	<Router>
 	<div id="appHolder">
 		<div class="navSection">
 			<Nav/>
 		</div>
 		<div class="canvas">
-			<Chat />
+				<Route path="chat">
+					<Chat />
+				</Route>
+				<Route path="leaderboard">
+					<Leaderboard />
+				</Route>
+				<Route>
+					<Play />
+				</Route>
 		</div>
 	</div>
+	</Router>
 {:else}
 <main>
 <div class="mainPage">

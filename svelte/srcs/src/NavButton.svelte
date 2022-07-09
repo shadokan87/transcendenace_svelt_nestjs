@@ -3,11 +3,12 @@
     export let extension = "";
     export let selected = "";
     export let name = "";
-export let alt = "";
+    export let alt = "";
 
 	import navselect from "./stores/NavStore.js";
     import { fade, fly, scale} from 'svelte/transition';
     import { onMount } from  "svelte";
+    import { Router, Route, Link } from "svelte-navigator";
     let select = "";
     navselect.subscribe( val => { select = val});
 	const toggleNav = () => { navselect.update(navselect => name); };
@@ -16,15 +17,17 @@ export let alt = "";
     });
 </script>
 
+        <Link to={name}>
         {#if select != name}
-            <div class="navBtn" id={name} role="button" on:click={toggleNav}>
-            <img src={src + "." + extension} {alt} id="img">
+          <div class="navBtn" id={name} role="button" on:click={toggleNav}>
+                <img src={src + "." + extension} {alt} id="img">
             </div>
         {:else}
 			<div class="navBtn" id={name} role="button" on:click={toggleNav}>
-            <img src={src + selected + "." + extension} {alt} in:fade>
-        </div>
+                <img src={src + selected + "." + extension} {alt} in:fade>
+            </div>
         {/if}
+        </Link>
 <style>
 .navBtn
 {

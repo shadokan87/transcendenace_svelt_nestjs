@@ -17,7 +17,7 @@ let gamepad = {
     extension: "svg",
     selected: "-selected",
     alt: "gamepad logo",
-    name: "Play"
+    name: "play"
 };
 
 let chat = {
@@ -25,7 +25,7 @@ let chat = {
     selected: "-selected",
     extension: "svg",
     alt: "chat logo",
-    name: "Chat"
+    name: "chat"
 };
 
 let leaderboard = {
@@ -33,7 +33,7 @@ let leaderboard = {
     selected: "-selected",
     extension: "svg",
     alt: "leaderboard logo",
-    name: "Leaderboard"
+    name: "leaderboard"
 };
 
 </script>

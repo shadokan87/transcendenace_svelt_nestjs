@@ -1,16 +1,30 @@
 <script lang="ts">
-import chatFeed from "./chatFeed.svelte"
-import ChatInput from "./chatInput.svelte";
+import chatFeed from "./components/feed/chatFeed.svelte"
+import ChatInput from "./components/chatInput.svelte";
+import ProfileCard from "../users/profile/profileCard.svelte";
+import App from "../../App.svelte";
+function getRoomName()
+{
+	return ("Room name");
+}
+let profile = {
+	wins: "187",
+	loss: "26",
+	played: "213",
+	nick: "shadokan87",
+	id: "2459",
+	nav: true
+};
 </script>
 
 <main>
 	<div class="chatWrapper">
 		<div class="chatNav">
-		<input type="text" placeholder="Search a message / channel" id="searchMessage">
+			<ProfileCard {...profile} />		
 		</div>
 		<div class="chatContent">
 			<div class="displaySection">
-				<h1 style="text-align: center;color: E9E9E9;font-size: 2em;">Room Name</h1>
+				<h1 style="text-align: center;color: white;font-size: 2em;">{getRoomName()}</h1>
 				<svelte:component this={chatFeed}/>
 			</div>
 			<div class="inputSection">
@@ -51,14 +65,14 @@ import ChatInput from "./chatInput.svelte";
 		display: flex;
 		flex-direction: column;
 		flex-wrap: nowrap;
-		background-color: #E2E2E2;
+		background-color: #383838;
 	}
 	.inputSection
 	{
 		padding: 2em;
 		display: flex;
 		justify-content: center;
-		background-color: #E2E2E2;
+		background-color: #383838;
 	}
 	.inputContainer
 	{
@@ -66,24 +80,9 @@ import ChatInput from "./chatInput.svelte";
 		justify-content: left;
 		height: 5em;
 		width: 100%;
-		background-color: #E9E9E9;
+		background-color: #5C5C5C;
+		box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.25);
 		border-radius: 1em;
 		padding: 0.5em;
-	}
-	#searchMessage
-	{
-		margin-left: auto;
-		transition-duration: 0.2s;
-		height: 3em;
-		margin: 1em;
-		outline: none;
-		border-radius: 1em;
-		border: 0.3em solid magenta;
-	}
-	#searchMessage:focus
-	{
-		transition-duration: 0.2s;
-		outline: none;
-		border-radius: 10px;
 	}
 </style>
