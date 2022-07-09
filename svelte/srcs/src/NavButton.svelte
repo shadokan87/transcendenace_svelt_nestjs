@@ -64,7 +64,7 @@
 .navBtn img
 {
     height: 1.8em;
-	width: 4em;
+	width: 3em;
 }
 .btnSelected
 {

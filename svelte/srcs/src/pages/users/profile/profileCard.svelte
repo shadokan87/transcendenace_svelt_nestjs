@@ -8,14 +8,15 @@
     export let imgUrl = "";
 </script>
 <div class="profileCard">
-    <img src="./angry-panda.gif" alt="user-avatar" id="userAvatar">
-    <h1 id="nick">{nick}</h1>
+    <!-- <img src="./angry-panda.gif" alt="user-avatar" id="userAvatar">
+    <h1 id="nick">{nick}</h1> -->
 </div>
 <style>
 .profileCard
 {
+    left: 0;
+    right: 0;
     height: 6em;
-    width: 100%;
     border-radius: 0.5em;
     padding: 0.5em;
     background-color: #232424;

@@ -50,6 +50,12 @@ main
 	justify-content: center;
 	height: 100vh;
 }
+.navSection
+{
+	margin: 0;
+	padding: 0;
+	background-color: red;
+}
 #title
 {
 	font-family: 'Fredoka One', cursive;
@@ -67,5 +73,6 @@ main
 	.canvas
 	{
 		background-color: grey;
+		width: 100%;
 	}
 </style>
