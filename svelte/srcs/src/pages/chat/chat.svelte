@@ -3,6 +3,9 @@ import chatFeed from "./components/feed/chatFeed.svelte"
 import ChatInput from "./components/chatInput.svelte";
 import ProfileCard from "../users/profile/profileCard.svelte";
 import App from "../../App.svelte";
+import ChatBubble from "./components/feed/chatBubble.svelte";
+import ChatFeed from "./components/feed/chatFeed.svelte";
+import DropDownButton from "./components/DropDownButton.svelte";
 function getRoomName()
 {
 	return ("Room name");
@@ -15,12 +18,35 @@ let profile = {
 	id: "2459",
 	nav: true
 };
+
+let plusBtnOpts = [
+	{ link: "POPUP_CREATE_ROOM", description: "create a room"},
+	{ link: "POPUP_JOIN_ROOM", description: "join a room"},
+];
+
+let plusBtn = {
+	src: "./cross.svg",
+	name: "chat-footer-plusBtn",
+	alt: "plus-icon",
+	opts: plusBtnOpts
+};
 </script>
 
 <main>
 	<div class="chatWrapper">
 		<div class="chatNav">
-			<ProfileCard {...profile} />		
+			<div class="top-footer-wrapper">
+				<div class="chatNav-top">
+					<ProfileCard {...profile} />
+				</div>
+				<div class="chatNav-footer">
+					<div class="chatNav-footer-left">
+					</div>
+					<div class="chatNav-footer-right">
+						<DropDownButton {...plusBtn} />
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="chatContent">
 			<div class="displaySection">
@@ -78,11 +104,28 @@ let profile = {
 	{
 		display: flex;
 		justify-content: left;
-		height: 5em;
+		height: 3em;
 		width: 100%;
 		background-color: #5C5C5C;
 		box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.25);
 		border-radius: 1em;
 		padding: 0.5em;
+	}
+	.top-footer-wrapper
+	{
+		display: inline-block;
+		width: 100%;
+		height: 100%;
+		/* background-color: red; */
+	}
+	.chatNav-top
+	{
+		height: 95%;
+		/* background-color: green; */
+	}
+	.chatNav-footer
+	{
+		height: 5%;
+		/* background-color: purple; */
 	}
 </style>

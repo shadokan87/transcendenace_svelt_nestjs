@@ -54,7 +54,7 @@ main
 {
 	margin: 0;
 	padding: 0;
-	background-color: red;
+	width: 5em;
 }
 #title
 {
@@ -66,7 +66,7 @@ main
 #appHolder
 {
 	display: grid;
-	grid-template-columns: 0.5fr 8fr;
+	grid-template-columns: 0.2fr 8fr;
 	height: 100vh;
 	background-color: #2D2D2D;
 	}

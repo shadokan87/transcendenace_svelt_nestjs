@@ -52,18 +52,14 @@ let leaderboard = {
 padding: 0;
 margin: 0;
 }
+nav{ width: 5em; }
 .navWrapper
 {
    display: grid;
-   grid-template-rows: 0.5fr 0.6fr 0.5fr 0.5fr 0.5fr 1fr;
+   grid-template-rows: 0.5fr 0.6fr 0.3fr 0.3fr 0.3fr 1fr;
    grid-row-gap: 1em;
    height: 100vh;
+   width: 5em;
    background-color: #242323;
-   width: 7em;
-   margin: 0px;
-}
-nav{
-    margin: 0;
-    width: 5em;
 }
 </style>

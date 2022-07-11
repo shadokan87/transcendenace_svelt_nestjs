@@ -2,7 +2,7 @@
 let inputValue;
 function getPlaceHolder()
 {
-	return ("Type a message");
+	return ("Type a message . . .");
 }
 function submitInput(event)
 {
@@ -28,5 +28,5 @@ function submitInput(event)
 	border: 0;
 	color: white;
 	font-size: 2em;
-	}
+}
 </style>
