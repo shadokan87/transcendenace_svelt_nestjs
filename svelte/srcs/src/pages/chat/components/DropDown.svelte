@@ -1,9 +1,17 @@
 <script lang="ts">
     export let opts;
+    import toggled from "../../../stores/ToggleStore";
+    let currentToggled = "";
+    let name = opts.link;
+    toggled.subscribe( val => {currentToggled = val});
+    const toggleOpt = () => {
+            toggled.set(name);
+            // console.log(toggled);
+    }
 </script>
       <div class="dropDown">
                 {#each opts as opt}
-                <div class="dropDownOpt" id={opt.link}>
+                <div class="dropDownOpt" id={opt.link} on:click={toggleOpt}>
                     <h1>
                         {opt.description}
                     </h1>

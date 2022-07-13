@@ -6,12 +6,19 @@
 	import Leaderboard from './pages/leaderboard/leaderboard.svelte';
 	import Play from './pages/play/play.svelte';
 
-	let login = true;
+	let login = false;
 	const loginUser = () =>{ !login ? (login = true) : (login = false); }
 </script>
 
 {#if login}
 	<Router>
+		<div class="overlay">
+			<div class="hide"></div>
+			<div class="test">
+					<button>TEST</button>
+					<h1>testtset</h1>
+			</div>
+		</div>
 	<div id="appHolder">
 		<div class="navSection">
 			<Nav/>
@@ -43,12 +50,37 @@
 </main>
 {/if}
 <style>
+	.test
+	{
+		height: 200px;
+		width: 200px;
+		background-color: grey;
+		z-index: 10;
+	}
+	.hide
+	{
+		height: 100%;
+		width: 100%;
+		background-color: rgba(0,0,0,0.5);
+		position: absolute;
+		display: block;
+	}
 main
 {
 	display: flex;
 	background-color: #2d2d2d;
 	justify-content: center;
 	height: 100vh;
+	background-color: black;
+	z-index: 3;
+}
+.overlay
+{
+	position: fixed;
+	z-index: 10;
+	display: block;
+	height: 100vh;
+	width: 100vw;
 }
 .navSection
 {
