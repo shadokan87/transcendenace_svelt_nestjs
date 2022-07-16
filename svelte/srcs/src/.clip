@@ -5,3 +5,17 @@
 	bind:value={inputValue}
 	id="input"
 	on:keydown={submitInput}/>
+
+				<div class="titleWrapper"
+					 style="display: flex; justify-content: center; width: 100%;">
+					<h1 id="title">{placeholder}</h1>
+					<div class="crossWrapper">
+						<img  style="cursor: pointer;" src="./close.svg" on:click={closeWindow} alt="close-icon">
+					</div>
+
+	<div class="titleWrapper">
+							<h1 id="title">{placeholder}</h1>
+						</div>
+						<div class="closeBtnWrapper">
+							<img id="close" src="./close.svg" on:click={closeWindow} alt="close-icon">
+						</div>
