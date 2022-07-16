@@ -5,7 +5,8 @@ import ProfileCard from "../users/profile/profileCard.svelte";
 import App from "../../App.svelte";
 import ChatBubble from "./components/feed/chatBubble.svelte";
 import ChatFeed from "./components/feed/chatFeed.svelte";
-import DropDownButton from "./components/DropDownButton.svelte";
+import DropDownButton from "../../common/dropDown/DropDownButton.svelte";
+import CreateRoom from "./createRoom.svelte";
 function getRoomName()
 {
 	return ("Room name");
@@ -27,6 +28,7 @@ let plusBtnOpts = [
 let plusBtn = {
 	src: "./cross.svg",
 	name: "chat-footer-plusBtn",
+	triggers: "DropDown",
 	alt: "plus-icon",
 	opts: plusBtnOpts
 };

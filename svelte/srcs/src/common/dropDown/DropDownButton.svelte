@@ -3,23 +3,18 @@
     export let name;
     export let alt;
     export let opts;
-    import toggled from "../../../stores/ToggleStore";
+    import { toggled } from "../../stores/ToggleStore";
     import DropDown from "./DropDown.svelte"
     let currentToggled = "";
     toggled.subscribe( val => {currentToggled = val});
-    const toggleBtn = () => {
-        if (currentToggled == name)
-            toggled.update(toggled => "none");
-        else
-            toggled.update(toggled => name);
-    }
+    const toggleBtn = () => { toggled.update(toggled => (name == currentToggled ? "none" : name)); }
 </script>
 <div class="dropDownBtn" id={name}>
     <div class="toggle" on:click={ toggleBtn }>
         <img {src} {alt}>
-    {#if currentToggled == name}
-        <DropDown {opts}/>
-    {/if}
+        {#if currentToggled == name}
+            <DropDown {opts}/>
+        {/if}
     </div>
 </div>
 

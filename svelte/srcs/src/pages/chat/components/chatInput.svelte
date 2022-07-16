@@ -4,12 +4,11 @@ function getPlaceHolder()
 {
 	return ("Type a message . . .");
 }
-function submitInput(event)
+export function submitInput(event)
 {
 	if (event.key != "Enter")
 		return ;
 	inputValue = "";
-
 }
 </script>
 <input

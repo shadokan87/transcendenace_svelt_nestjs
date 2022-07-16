@@ -1,17 +1,23 @@
 <script lang="ts">
     export let opts;
-    import toggled from "../../../stores/ToggleStore";
+    import { toggled } from "../../stores/ToggleStore";
+    import { overlay } from "../../stores/ToggleStore";
+    import { popup } from "../../stores/ToggleStore";
     let currentToggled = "";
     let name = opts.link;
+    // let description = "POPUP_CREATE_ROOM";
     toggled.subscribe( val => {currentToggled = val});
-    const toggleOpt = () => {
-            toggled.set(name);
-            // console.log(toggled);
-    }
+    const toggleOpt = (link) => {
+        // console.log(currentToggled);
+        console.log(link);
+        console.log(currentToggled);
+        overlay.update(overlay => "on");
+        popup.update(popup => link);
+    };
 </script>
       <div class="dropDown">
                 {#each opts as opt}
-                <div class="dropDownOpt" id={opt.link} on:click={toggleOpt}>
+                <div class="dropDownOpt" id={opt.link} on:click={() => toggleOpt(opt.link)}>
                     <h1>
                         {opt.description}
                     </h1>

@@ -44,8 +44,6 @@
 	padding: 0px;
 	transform: translateY(100px);
 }
-
-
 .bigButton:active
 {
 	transition-duration: 0.2s;
@@ -60,6 +58,20 @@
 	font-family: 'Roboto', sans-serif;
 	padding: 0px;
 	transform: translateY(100px);
+}
+
+.popupCard-big
+{
+	padding: 1.5em;
+    margin: 5em;
+	margin-left: 8em;
+    position: absolute;
+    height: 50%;
+    width: 80vw;
+    background-color: #383838;
+    border-radius: 0.5em;
+    z-index: 4;
+    align-self: center;
 }
 
 /* The switch - the box around the slider */

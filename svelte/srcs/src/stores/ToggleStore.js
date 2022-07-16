@@ -1,5 +1,9 @@
+import { write } from "fs";
 import { writable } from "svelte/store";
 
-const toggled = writable("None");
+export const toggled = writable("none");
+export const overlay = writable("off");
+export const overlayCloseByClick = writable("true");
+export const popup = writable("none");
 
-export default toggled;
+// export default toggled;
