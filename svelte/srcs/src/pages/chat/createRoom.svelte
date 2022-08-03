@@ -4,7 +4,7 @@
 	import { onDestroy, onMount } from "svelte";
 	import { overlayCloseByClick } from "../../stores/ToggleStore";
 	import { fly, scale } from "svelte/transition";
-import { quadOut } from "svelte/easing";
+	import { quadOut } from "svelte/easing";
 
 	onMount(() => overlayCloseByClick.update(overlay => "false"));
 	onDestroy(() => overlayCloseByClick.update(overlay => "true"));
@@ -87,7 +87,18 @@ import { quadOut } from "svelte/easing";
 				</div>
 			</div>
 			<div class="rhs">
-				<h1 id="room-name">{inputName.length < nmBreakpoint ? inputName : inputName.substring(0, nmBreakpoint) + ". . ."}</h1>
+				<h1 id="room-name">{inputName.length == 0
+				? "My room"
+				: inputName.length < nmBreakpoint
+				? inputName
+				: inputName.substring(0, nmBreakpoint) + ". . ."}</h1>
+				<div class="avatarWrapper">
+					<img src="./import_icon.svg" alt="import icon" id="import">
+					<img src="./room-default-avatar.png" alt="room-avatar" id="room-avatar">
+				</div>
+				<div class="medButton" id="submit">
+					<h1>Submit</h1>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -99,10 +110,10 @@ import { quadOut } from "svelte/easing";
 	.sides-wrapper
 		{
 		display: grid;
-		grid-template-columns: 4fr 2fr;
+		grid-template-columns: 4fr 3fr;
 		/* background-color: red; */
 		height: 100%;
-		padding: 1.5em;
+		margin: 50px;
 	}
 	.lhs
 		{
@@ -111,6 +122,9 @@ import { quadOut } from "svelte/easing";
 	.rhs
 		{
 		/* background-color: purple; */
+		height: 100%;
+		padding: 1em;
+		text-align: center;
 	}
 	.top
 		{
@@ -126,6 +140,13 @@ import { quadOut } from "svelte/easing";
 		display: flex;
 		justify-content: center;
 		transform: translateX(8%);
+	}
+	.avatarWrapper
+	{
+		height: 10em;
+		width: 10em;
+		/* background-color: red; */
+		margin: 0 auto;
 	}
 	.closeBtnWrapper
 		{
@@ -148,6 +169,24 @@ import { quadOut } from "svelte/easing";
 	font-size: 0.8em;
 	cursor: pointer;}
 #shwpswd:hover { color: rgba(255, 255, 255, 100%); }
+#room-avatar
+	{
+    margin: 0.5em;
+    height: 8em;
+    width: 8em;
+    border-radius: 0.5em;
+    box-sizing: border-box;
+	border: 0.4em solid white;
+    /* cursor: pointer; */
+}
+#import
+	{
+	float: right;
+	position: absolute;
+	cursor: pointer;
+	transform: translateX(6em);
+	width: 4em;
+}
 .input
 	{
 	margin: 0.2em;

@@ -42,7 +42,7 @@
 }
 #userAvatar
 {
-    transition-duration: 0.2s;
+    /* transition-duration: 0.2s; */
     margin: 0.5em;
     height: 4em;
     width: 4em;

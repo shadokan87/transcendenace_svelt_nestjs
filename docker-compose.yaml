@@ -2,6 +2,7 @@ version: '3.7'
 services:
   db:
     image: postgres:latest
+    container_name: postgre
     volumes:
       - "data:/var/lib/postgresql/data"
     ports:
@@ -11,6 +12,8 @@ services:
       POSTGRES_USER: ${PG_USER}
       POSTGRES_DB: ${PG_DB}
     restart: always
+    networks:
+    - trans
   adminer:
    image: adminer
    restart: always
@@ -29,18 +32,10 @@ services:
       build: nest/
       container_name: nest
       ports:
-        - 3434:3434
+        - 3000:3000
+        - 5555:5555
       volumes:
         - "nest:/home/nest"
-      networks:
-        - trans
-  prisma:
-      build: prisma/
-      container_name: prisma
-      ports:
-        - 4466:4466
-      volumes:
-        - "prisma:/home/prisma"
       networks:
         - trans
       depends_on:
@@ -64,9 +59,3 @@ volumes:
       o: 'bind'
       type: 'none'
       device: "${PWD}/nest/srcs"
-  prisma:
-    driver: local
-    driver_opts:
-      o: 'bind'
-      type: 'none'
-      device: "${PWD}/prisma/srcs"

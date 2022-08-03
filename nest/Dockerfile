@@ -1,5 +1,6 @@
 FROM node:latest
 
 WORKDIR /home/nest
-EXPOSE 3434
-ENTRYPOINT npm install && npm run start:dev
+COPY .env ../.
+EXPOSE 3000 5555
+ENTRYPOINT npm install --legacy-peer-deps && cp ../.env . && npx prisma migrate dev && npm run start:dev

@@ -68,7 +68,7 @@ let plusBtn = {
 	.chatWrapper
 	{
 		display: grid;
-		grid-template-columns: 2fr 6.5fr;
+		grid-template-columns: 20em auto;
 		grid-template-rows: 1fr;
 		height: 100vh;
 	}
