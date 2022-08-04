@@ -6,22 +6,39 @@
 	import Chat from "./pages/chat/chat.svelte"
 	import Leaderboard from './pages/leaderboard/leaderboard.svelte';
 	import Play from './pages/play/play.svelte';
+	import OnBoardPage from "./pages/onboard/onboard.svelte";
 	import Overlay from './common/Overlay.svelte';
 	import Login from "./pages/login/login.svelte";
 	import CreateRoom from './pages/chat/createRoom.svelte';
 	import { onMount } from "svelte";
-	import { isLogin } from "./stores/loginStore";
+	import { isLogin, onBoard, profile } from "./stores/loginStore";
 	import axios from "axios";
 
 	let login = false;
+	let onboard = false;
 	isLogin.subscribe(val => { login = val});
+	onBoard.subscribe(val => { onboard = val});
 	onMount( () => {
+		// check login status
 		axios({
 			method: 'Get',
 			url: 'http://localhost:3000/users/see_status',
 			withCredentials: true,
 		})
-		.then( () => {
+		.then( (res) => {
+			console.log(res);
+			if (res.data == "onboard")
+				onBoard.update( onBoard => true );
+
+			// get profile
+				axios.get("http://localhost:3000/users/profile")
+				.then( profileRes => { profile.set(profileRes) })
+				.catch ( () => {
+					console.log("failed to get user profile");
+				});
+
+			console.log(res);
+			console.log(onboard);
 			isLogin.update( isLogin => true );
 		})
 		.catch( () => {
@@ -30,7 +47,9 @@
 	})
 </script>
 
-{#if login}
+{#if onboard}
+	<OnBoardPage />
+{:else if login}
 	<Router>
 	<div id="appHolder">
 	<Overlay/>

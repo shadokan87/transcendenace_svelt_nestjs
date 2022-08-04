@@ -3,7 +3,8 @@ import { Request } from 'express';
 import { AuthenticateGuard } from 'src/auth/guard/42.guard';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User42Dto } from './dto/User42.dto';
-import { UniqueNameDto } from './dto/unique-name.dto'
+import { UniqueNameDto } from './dto/unique-name.dto';
+import { NickNameDto } from './dto/nickname.dto';
 import { UserService } from './user.service';
 import { UploadAvatarDto } from './dto/UploadAvatar.dto';
 import { UpdateStatusDto } from './dto';
@@ -53,6 +54,15 @@ export class UserController {
         }
         return "Not Your Friend";
     }
+ 	@Get('profile')
+    Profile(
+        @Req() req: Request,
+        @Body() targetId: any,
+    ) {
+        const userId = req.user['school_id'];
+        targetId = userId;
+        return this.userService.SeeProfile(targetId);
+    }
 
     @Patch('update_status')
     UpdateStatus(
@@ -63,13 +73,13 @@ export class UserController {
         return this.userService.UpdateStatus(userId, dto);
     }
 
-    @Patch('change_unique_name')
+    @Patch('change_nickname')
     ChangeUniqueName(
         @Req() req: Request,
-        @Body() dto: UniqueNameDto,
+        @Body() dto: NickNameDto,
     ){
         const userId = req.user['school_id'];
-        return this.userService.ChangeUniqueName(userId, dto);
+        return this.userService.ChangeNickName(userId, dto);
     }
 
     @Patch('upload_avatar')

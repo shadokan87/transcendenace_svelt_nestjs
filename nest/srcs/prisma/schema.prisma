@@ -12,8 +12,8 @@ datasource db {
 
 model User {
   school_id   	Int @unique
-  nickname		String @unique @default("")
   unique_name 	String @unique
+  nickname		String @unique @default("")
   username    	String
   displayName 	String
   first_name  	String

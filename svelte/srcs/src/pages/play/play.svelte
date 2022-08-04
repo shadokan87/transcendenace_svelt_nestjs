@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { isLogin } from "../../stores/loginStore";
 	import  axios  from "axios";
-const logout = () => {
-	axios.get("http://localhost:3000/auth/logout");
-	isLogin.update(isLogin => false);
+	const logout = () => {
+	axios.get("http://localhost:3000/auth/logout")
+		.then( () => { isLogin.update(isLogin => false) } )
+		.catch( () => { console.log("logout failed.") } ); 
 };
 </script>
 <main>
