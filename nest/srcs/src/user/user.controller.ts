@@ -4,10 +4,11 @@ import { AuthenticateGuard } from 'src/auth/guard/42.guard';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User42Dto } from './dto/User42.dto';
 import { UniqueNameDto } from './dto/unique-name.dto';
-import { NickNameDto } from './dto/nickname.dto';
+import { nickDto } from './dto/Nick.dto';
 import { UserService } from './user.service';
 import { UploadAvatarDto } from './dto/UploadAvatar.dto';
 import { UpdateStatusDto } from './dto';
+import {isNotEmpty} from 'class-validator';
 
 @UseGuards(AuthenticateGuard)
 @Controller('users')
@@ -76,10 +77,11 @@ export class UserController {
     @Patch('change_nickname')
     ChangeUniqueName(
         @Req() req: Request,
-        @Body() dto: NickNameDto,
+        @Body() dto: nickDto,
     ){
         const userId = req.user['school_id'];
         return this.userService.ChangeNickName(userId, dto);
+		// return (dto.val);
     }
 
     @Patch('upload_avatar')

@@ -18,6 +18,7 @@
 	let onboard = false;
 	isLogin.subscribe(val => { login = val});
 	onBoard.subscribe(val => { onboard = val});
+	axios.defaults.withCredentials = true
 	onMount( () => {
 		// check login status
 		axios({
@@ -32,7 +33,10 @@
 
 			// get profile
 				axios.get("http://localhost:3000/users/profile")
-				.then( profileRes => { profile.set(profileRes) })
+				.then( profileRes => {
+					profile.set(profileRes.data)
+					console.log(profileRes)
+				})
 				.catch ( () => {
 					console.log("failed to get user profile");
 				});

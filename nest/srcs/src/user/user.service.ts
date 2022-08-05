@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { UpdateStatusDto, UploadAvatarDto, UniqueNameDto, NickNameDto } from './dto';
+import { UpdateStatusDto, UploadAvatarDto, UniqueNameDto, nickDto } from './dto';
 
 @Injectable()
 export class UserService {
@@ -83,28 +83,30 @@ export class UserService {
             });
         }
 
-        async ChangeNickName(userId: number, dto: NickNameDto) {
-            const check_nick = await this.prisma.user.findMany({
-                where: {
-                    nickname: dto.nickname,
-                },
-            });
-            if (check_nick) {
-                return "Nickname already taken, please choose another one"
-            }
-            const user = await this.prisma.user.findUnique({
-                where: {
-                    school_id: userId,
-                },
-            });
-            await this.prisma.user.update({
-                where: {
-                    school_id: userId,
-                },
-                data: {
-                    ...dto,
-                },
-            });
+        async ChangeNickName(userId: number, dto: nickDto) {
+            // const check_nick = await this.prisma.user.findFirst({
+            //     where: {
+            //         nickname: "shadokan87",
+            //     },
+            // });
+            // if (check_nick) {
+            //     return dto.nickname;
+            // }
+            // const user = await this.prisma.user.findUnique({
+            //     where: {
+            //         school_id: userId,
+            //     },
+            // });
+            // await this.prisma.user.update({
+            //     where: {
+            //         school_id: userId,
+            //     },
+            //     data: {
+            //         ...dto,
+            //     },
+            // });
+			// return ((await this.getUserById(userId)).nickname);
+			return (dto.val);
         }
 
         async UploadAvatar(userId: number, dto: UploadAvatarDto) {
