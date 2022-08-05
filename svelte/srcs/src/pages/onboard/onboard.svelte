@@ -17,9 +17,17 @@ axios.defaults.headers.common = {
 	};
 	const checkNick = async () => {
 		console.log(inputNick);
+		if (inputNick == "")
+			return ;
 		await axios.patch("http://localhost:3000/users/change_nickname", {val: inputNick} )
 		.then( (res) => {
 			console.log(res);
+			if (res.data == inputNick)
+			{
+				myprofile.nickname = inputNick;
+				profile.update(profile => myprofile);
+				onBoard.update(onBoard => false);
+			}
 		})
 		.catch( (res) => {
 			console.log(res);

@@ -1,7 +1,6 @@
 <script lang="ts">
 import chatFeed from "./components/feed/chatFeed.svelte"
 import ChatInput from "./components/chatInput.svelte";
-import ProfileCard from "../users/profile/profileCard.svelte";
 import App from "../../App.svelte";
 import ChatBubble from "./components/feed/chatBubble.svelte";
 import ChatFeed from "./components/feed/chatFeed.svelte";
@@ -11,14 +10,6 @@ function getRoomName()
 {
 	return ("Room name");
 }
-let profile = {
-	wins: "187",
-	loss: "26",
-	played: "213",
-	nick: "shadokan87",
-	id: "2459",
-	nav: true
-};
 
 let plusBtnOpts = [
 	{ link: "POPUP_CREATE_ROOM", description: "create a room"},
@@ -39,7 +30,6 @@ let plusBtn = {
 		<div class="chatNav">
 			<div class="top-footer-wrapper">
 				<div class="chatNav-top">
-					<ProfileCard {...profile} />
 				</div>
 				<div class="chatNav-footer">
 					<div class="chatNav-footer-left">

@@ -84,29 +84,27 @@ export class UserService {
         }
 
         async ChangeNickName(userId: number, dto: nickDto) {
-            // const check_nick = await this.prisma.user.findFirst({
-            //     where: {
-            //         nickname: "shadokan87",
-            //     },
-            // });
-            // if (check_nick) {
-            //     return dto.nickname;
-            // }
-            // const user = await this.prisma.user.findUnique({
-            //     where: {
-            //         school_id: userId,
-            //     },
-            // });
-            // await this.prisma.user.update({
-            //     where: {
-            //         school_id: userId,
-            //     },
-            //     data: {
-            //         ...dto,
-            //     },
-            // });
-			// return ((await this.getUserById(userId)).nickname);
-			return (dto.val);
+            const check_nick = await this.prisma.user.findFirst({
+                where: {
+                    nickname: dto.val,
+                },
+            });
+            if (check_nick)
+                return "";
+            const user = await this.prisma.user.findUnique({
+                where: {
+                    school_id: userId,
+                },
+            });
+            await this.prisma.user.update({
+                where: {
+                    school_id: userId,
+                },
+                data: {
+                    nickname: dto.val,
+                },
+            });
+			return ((await this.getUserById(userId)).nickname);
         }
 
         async UploadAvatar(userId: number, dto: UploadAvatarDto) {

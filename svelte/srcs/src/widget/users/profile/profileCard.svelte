@@ -1,17 +1,13 @@
 <script lang="ts">
-    export let wins;
-    export let loss;
-    export let played;
-    export let nick;
-    export let id;
-    export let nav = false;
-    export let imgUrl = "";
+	import { subscribe } from "svelte/internal";
+	import { profile } from "../../../stores/loginStore.js"
+	let myprofile = {};
+	profile.subscribe( val => myprofile = val);
 </script>
 <div class="profileCard">
     <img src="./angry-panda.gif" alt="user-avatar" id="userAvatar">
     <div class="userInfo">
-        <h1 id="nick">{nick}</h1>
-        <h1 id="userId">#{id}</h1>
+		<h1 id="nick">{myprofile.nickname}<span id="unique_name">#{myprofile.unique_name}</span></h1>
     </div>
 </div>
 <style>
@@ -30,7 +26,12 @@
         bottom: 1em;
     }
 .profileCard
-{
+	{
+	margin: 5em;
+	margin-left: 80%;
+	float: right;
+	position: absolute;
+	width: 20em;
     display: flex;
     flex-wrap: nowrap;
     left: 0;
@@ -38,11 +39,11 @@
     height: 6em;
     border-radius: 0.5em;
     padding: 0.5em;
-    background-color: #232424;
+	background-color: #232424;
 }
 #userAvatar
 {
-    /* transition-duration: 0.2s; */
+    transition-duration: 0.2s;
     margin: 0.5em;
     height: 4em;
     width: 4em;
@@ -51,4 +52,8 @@
     border: 0.2em solid white;
     cursor: pointer;
 }
+	#unique_name
+		{
+		color: grey;
+	}
 </style>

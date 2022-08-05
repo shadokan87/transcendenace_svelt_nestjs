@@ -12,7 +12,9 @@
 	import CreateRoom from './pages/chat/createRoom.svelte';
 	import { onMount } from "svelte";
 	import { isLogin, onBoard, profile } from "./stores/loginStore";
+	import profileCard from "./widget/users/profile/profileCard.svelte"
 	import axios from "axios";
+import ProfileCard from "./widget/users/profile/profileCard.svelte";
 
 	let login = false;
 	let onboard = false;
@@ -55,8 +57,9 @@
 	<OnBoardPage />
 {:else if login}
 	<Router>
-	<div id="appHolder">
-	<Overlay/>
+		<div id="appHolder">
+			<Overlay/>
+			<ProfileCard />
 	<CreateRoom />
 		<div class="navSection">
 			<Nav/>
