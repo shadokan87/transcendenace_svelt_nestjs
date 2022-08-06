@@ -10,6 +10,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// model Channel {
+// 		id		Int @id @default(autoincrement())
+// 		UserId	Int
+// 		owner           User @relation(fields: [UserId], references: [school_id])
+// }
+
+// model Post {
+// 		PostId	Int @id @default(autoincrement())
+// 		UserId	Int
+// 		ChanId Int
+// 		FromChan	Channel @relation(fields: [ChanId], references: [id])
+// 		owner           User @relation(fields: [UserId], references: [school_id])
+// 		message					String
+// }
+
 model User {
   school_id   	Int @unique
   unique_name 	String @unique
@@ -23,12 +38,15 @@ model User {
   photo       	String
   status      	String
   friends     	Int[]
+  pendingFriends	Int[]
+  bans			Int[]
   Stats       	Stats?
   match_history Game[]
-  
+	useIntraPhoto Boolean @default(true)
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt 
 
+	chans Channel[]
   // @@map("users")
 }
 
@@ -51,4 +69,19 @@ model Game {
   looser          Int
   winners_points  Int
   loosers_points  Int
+}
+
+model Channel {
+	id Int @id @unique @default(autoincrement())
+	admins	Int[]
+  	UserId          Int
+  	owner           User @relation(fields: [UserId], references: [school_id])
+	Posts		Post[]
+}
+
+model Post {
+	id Int @id @unique @default(autoincrement())
+	message String
+	chanId Int
+	chan		Channel @relation(fields: [chanId], references: [id])
 }
