@@ -73,6 +73,9 @@ model Game {
 
 model Channel {
 	id Int @id @unique @default(autoincrement())
+	name	String
+	avatar	String
+	visibility Boolean @default(true)
 	admins	Int[]
   	UserId          Int
   	owner           User @relation(fields: [UserId], references: [school_id])

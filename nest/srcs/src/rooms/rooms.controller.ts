@@ -1,24 +1,19 @@
-import { Get, Post, Controller, Body } from '@nestjs/common';
+import { Post, Body, Controller, Get, Patch, Req, UseGuards } from '@nestjs/common';
+import { create } from "./dto/create.dto";
+import { AuthenticateGuard } from "src/auth/guard/42.guard";
+import { RoomsService } from './rooms.service';
+import {PrismaService} from 'src/prisma/prisma.service';
 
-let rooms = [
-	{name: "general"},
-	{name: "private"}
-];
-
-class createRoomDto {
-	name: string;
-	// visi: boolean;
-};
-
+@UseGuards(AuthenticateGuard)
 @Controller('rooms')
 export class RoomsController {
-	@Get("get")
-		returnAll(): any[] {
-			return (rooms);
-		};
+	constructor(
+				private RoomsService: RoomsService,
+				private prisma: PrismaService) {}
 	@Post("create")
-	createRoom(@Body() createRoomDto: createRoomDto) {
-			console.log("createRoomDto: " + createRoomDto);
-			rooms.push(createRoomDto);
+	createRoom( @Req() req: Request,
+			   @Body() dto: create) {
+			console.log("createRoomDto: " + dto);
+			return this.RoomsService.create(dto);
 		};
 }

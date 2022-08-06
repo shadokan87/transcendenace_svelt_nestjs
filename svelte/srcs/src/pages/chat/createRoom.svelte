@@ -5,9 +5,22 @@
 	import { overlayCloseByClick } from "../../stores/ToggleStore";
 	import { fly, scale } from "svelte/transition";
 	import { quadOut } from "svelte/easing";
+	import axios from "axios";
 
 	onMount(() => overlayCloseByClick.update(overlay => "false"));
 	onDestroy(() => overlayCloseByClick.update(overlay => "true"));
+	let dto = {
+		name: "test42",
+		visibility: true,
+		avatar: "default",
+		password: ""
+	};
+	axios.post("http://localhost:3000/rooms/create", dto)
+	.then( (res) => {
+		console.log(res)
+	})
+	.catch( () => {
+	});
 	let link = "POPUP_CREATE_ROOM";
 	let currentLink = "";
 	popup.subscribe( val => {currentLink = val});
