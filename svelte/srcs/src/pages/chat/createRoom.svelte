@@ -9,18 +9,6 @@
 
 	onMount(() => overlayCloseByClick.update(overlay => "false"));
 	onDestroy(() => overlayCloseByClick.update(overlay => "true"));
-	let dto = {
-		name: "test42",
-		visibility: true,
-		avatar: "default",
-		password: ""
-	};
-	axios.post("http://localhost:3000/rooms/create", dto)
-	.then( (res) => {
-		console.log(res)
-	})
-	.catch( () => {
-	});
 	let link = "POPUP_CREATE_ROOM";
 	let currentLink = "";
 	popup.subscribe( val => {currentLink = val});
@@ -30,7 +18,7 @@
 	{
 		if (event.key != "Enter")
 			return ;
-		inputName = "";
+		/* inputName = ""; */
 	}
 
 	let inputPswd = "";
@@ -38,9 +26,8 @@
 	{
 		if (event.key != "Enter")
 			return ;
-		inputPswd = "";
+		/* inputPswd = ""; */
 	}
-
 	const closeWindow = () =>
 	{
 		overlay.update(overlay => "off");
@@ -48,12 +35,32 @@
 		inputPswd = "";
 		inputName = "";
 	}
+	const submitRoom = async () => {
+		let dto = {
+		  name: inputName,
+		  password: inputPswd,
+		  visibility: (visimode == "public" ? true : false),
+		  avatar: "",
+		  UserId: 0
+		}
+		console.log(dto.visibility);
+		await axios.post("http://localhost:3000/rooms/create", dto)
+		.then( (res) => {
+			console.log(res);
+		})
+		.catch( (res) => {
+		});
+	}
 	let placeholder = "Create a room";
 	let visimode = "public";
 	let Visibilty = "Visibility: " + visimode;
 	let passwordVisi = "text";
-	const changeVisiMode = () => { if (visimode == "public") visimode = "private";
-	else visimode = "public"; Visibilty = "Visibilty: " + visimode; };
+	const changeVisiMode = () => {
+	if (visimode == "public")
+		visimode = "private";
+	else
+		visimode = "public";
+	Visibilty = "Visibilty: " + visimode; };
 	const changePswdVisi = () => {passwordVisi = passwordVisi == "password" ? "text" : "password"; };
 	const getNamePreview = () => {
 		return (inputName);
@@ -94,7 +101,7 @@
 				<div>
 					<h1>{Visibilty}</h1>
 					<label class="switch">
-						<input type="checkbox" on:click={ changeVisiMode }>
+						<input type="checkbox" on:click={changeVisiMode}>
 						<span class="slider round"></span>
 					</label>
 				</div>
@@ -109,7 +116,7 @@
 					<img src="./import_icon.svg" alt="import icon" id="import">
 					<img src="./room-default-avatar.png" alt="room-avatar" id="room-avatar">
 				</div>
-				<div class="medButton" id="submit">
+				<div class="medButton" id="submit" on:click={submitRoom}>
 					<h1>Submit</h1>
 				</div>
 			</div>

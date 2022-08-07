@@ -15,6 +15,7 @@
 	import profileCard from "./widget/users/profile/profileCard.svelte"
 	import axios from "axios";
 import ProfileCard from "./widget/users/profile/profileCard.svelte";
+import JoinRoom from "./pages/chat/joinRoom.svelte";
 
 	let login = false;
 	let onboard = false;
@@ -60,7 +61,8 @@ import ProfileCard from "./widget/users/profile/profileCard.svelte";
 		<div id="appHolder">
 			<Overlay/>
 			<ProfileCard />
-	<CreateRoom />
+			<CreateRoom />
+			<JoinRoom />
 		<div class="navSection">
 			<Nav/>
 		</div>

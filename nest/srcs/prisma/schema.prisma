@@ -10,21 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// model Channel {
-// 		id		Int @id @default(autoincrement())
-// 		UserId	Int
-// 		owner           User @relation(fields: [UserId], references: [school_id])
-// }
-
-// model Post {
-// 		PostId	Int @id @default(autoincrement())
-// 		UserId	Int
-// 		ChanId Int
-// 		FromChan	Channel @relation(fields: [ChanId], references: [id])
-// 		owner           User @relation(fields: [UserId], references: [school_id])
-// 		message					String
-// }
-
 model User {
   school_id   	Int @unique
   unique_name 	String @unique
@@ -38,6 +23,7 @@ model User {
   photo       	String
   status      	String
   friends     	Int[]
+  subscribedRooms	Int[]
   pendingFriends	Int[]
   bans			Int[]
   Stats       	Stats?
@@ -74,8 +60,9 @@ model Game {
 model Channel {
 	id Int @id @unique @default(autoincrement())
 	name	String
-	avatar	String
-	visibility Boolean @default(true)
+	avatar	String	@default("default-channel")
+	password String @default("")
+	visibility Boolean
 	admins	Int[]
   	UserId          Int
   	owner           User @relation(fields: [UserId], references: [school_id])
