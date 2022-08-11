@@ -5,10 +5,15 @@
 	import { overlayCloseByClick } from "../../stores/ToggleStore";
 	import { fly, scale } from "svelte/transition";
 	import { quadOut } from "svelte/easing";
+	import { msg, err } from "../../stores/alertStore.js"
 	import axios from "axios";
 
 	onMount(() => overlayCloseByClick.update(overlay => "false"));
 	onDestroy(() => overlayCloseByClick.update(overlay => "true"));
+	let errors: string[];
+	let messages: string[];
+	msg.subscribe(val => messages = val);
+	err.subscribe(val => errors = val);
 	let link = "POPUP_CREATE_ROOM";
 	let currentLink = "";
 	popup.subscribe( val => {currentLink = val});
@@ -40,15 +45,20 @@
 		  name: inputName,
 		  password: inputPswd,
 		  visibility: (visimode == "public" ? true : false),
-		  avatar: "",
+		  avatar: "default-room",
 		  UserId: 0
 		}
-		console.log(dto.visibility);
+		console.log(dto);
 		await axios.post("http://localhost:3000/rooms/create", dto)
 		.then( (res) => {
-			console.log(res);
+			closeWindow();
+			messages.push("You are now the owner of the room.");
+			messages.push("You are now admin.");
+			msg.set(messages);
 		})
-		.catch( (res) => {
+		.catch( (e) => {
+			errors.push("Room \"" + dto.name + "\" already exists.");
+			err.set(errors);
 		});
 	}
 	let placeholder = "Create a room";

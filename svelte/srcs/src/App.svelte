@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Router, Route } from "svelte-navigator";
 	import SecureRoute from "./secureRoute/secureRoute.svelte";
+	import { Confetti } from "svelte-confetti";
 	import Nav from './Nav.svelte';
 	import "./common.css";
 	import Chat from "./pages/chat/chat.svelte"
@@ -14,8 +15,9 @@
 	import { isLogin, onBoard, profile } from "./stores/loginStore";
 	import profileCard from "./widget/users/profile/profileCard.svelte"
 	import axios from "axios";
-import ProfileCard from "./widget/users/profile/profileCard.svelte";
-import JoinRoom from "./pages/chat/joinRoom.svelte";
+	import Message from "./widget/alert/message.svelte";
+	import ProfileCard from "./widget/users/profile/profileCard.svelte";
+	import JoinRoom from "./pages/chat/joinRoom.svelte";
 
 	let login = false;
 	let onboard = false;
@@ -54,6 +56,8 @@ import JoinRoom from "./pages/chat/joinRoom.svelte";
 	})
 </script>
 
+
+<Message />
 {#if onboard}
 	<OnBoardPage />
 {:else if login}

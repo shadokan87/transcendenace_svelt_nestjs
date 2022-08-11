@@ -2,4 +2,11 @@
   #  image: adminer
   #  restart: always
   #  ports:
-  #    - 8080:8080
+  # - 8080:8080
+
+	{#each errors as message, index (message)}
+		<svelte:component this={oneMessage} {message} borderColor="red" {index} on:click(() =>)/>
+	{/each}
+	{#each messages as message, index (message)}
+		<svelte:component this={oneMessage} {message} borderColor="green" {index}/>
+	{/each}

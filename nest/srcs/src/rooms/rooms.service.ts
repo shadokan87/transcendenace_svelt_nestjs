@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { createRoomDto } from './dto';
 
@@ -23,32 +23,34 @@ export class RoomsService {
 			});
 			return (ret);
 		}
-		async getRoomById(id: number) {
-			const ret = await this.prisma.channel.findUnique({
-				where: { id: id, }
-			});
-			return (ret);
-		}
-		async addAdmin(chanId: number, school_id: number) {
-			const chan = await this.getRoomById(chanId);
-			if (!chan)
-				throw new Error("addAdmin: channel: " + chanId + " does not exist.");
-			if (chan.admins.indexOf(school_id) != -1)
-				throw new Error("addAdmin: school_id: "
-								+ school_id
-								+ "  is already present in channel: "
-								+ chanId + ".");
-			await this.prisma.channel.update({
+		async addAdmin(chanId: number, school_id: number)
+		{
+			const chan = await this.prisma.channel.findUnique({
 				where: {
-					id: chan.id,
+					id: chanId,
 				},
-				data: {
-					admins: {
-						push: school_id
-					},
+				select: {
+					admins: true,
 				},
 			});
-			
+			const user = await this.getUserById(school_id);
+			chan.admins.push(school_id);
+		}
+		async changeOwner(chanId: number, school_id: number)
+		{
+			// const chan = await this.getRoomById(chanId);
+			// if (!chan)
+			// 	throw new Error("addAdmin: channel: " + chanId + " does not exist.");
+			// await this.prisma.channel.update({
+			// 	where: {
+			// 		id: chan.id,
+			// 	},
+			// 	data: {
+			// 		admins: {
+			// 			push: school_id
+			// 		},
+			// 	},
+			// });
 		}
 		async getPublicRooms() {
 			const rooms = await this.prisma.channel.findMany({
@@ -73,22 +75,18 @@ export class RoomsService {
 		async create(newRoom: createRoomDto) {
 			const roomAlreadyExist = await this.getRoomByName(newRoom.name);
 			if (roomAlreadyExist)
-				return ("Already exists");
+				throw new HttpException({
+					status: HttpStatus.CONFLICT,
+					error: "Room: ${newRoom.name} already exists",
+				}, HttpStatus.CONFLICT);
 			try{
 				const chan = await this.prisma.channel.create({
 					data: {
 						...newRoom,
 					},
 				});
-				await this.prisma.channel.update({
-					where: {
-						id: chan.id,
-					},
-					data: {
-						visibility: false,
-					}
-				});
 				await this.addAdmin(chan.id, newRoom.UserId);
+				await this.changeOwner(chan.id, newRoom.UserId);
 				return (chan);
 			}
 				catch(e) { return (e.message) }

@@ -3,7 +3,7 @@ import { Request } from 'express';
 import { createRoomDto } from "./dto/create.dto";
 import { AuthenticateGuard } from "src/auth/guard/42.guard";
 import { RoomsService } from './rooms.service';
-import {PrismaService} from 'src/prisma/prisma.service'
+import { PrismaService } from 'src/prisma/prisma.service'
 
 @UseGuards(AuthenticateGuard)
 @Controller('rooms')
@@ -14,6 +14,7 @@ export class RoomsController {
 	@Post("create")
 	createRoom( @Req() req: Request,
 			   @Body() dto: createRoomDto) {
+			dto = req.body;
 			dto.UserId = Number(req.user['school_id']);
 			return this.RoomsService.create(dto);
 		};
@@ -22,9 +23,14 @@ export class RoomsController {
 	{
 		return this.RoomsService.getPublicRooms()
 	}
+	@Get("id")
+	byId(@Req() req: Request, @Body() dto: {id: number})
+	{
+		return this.RoomsService.getRoomById(dto.id);
+	}
 	@Get("private")
 	privateRooms(@Req() req: Request)
 	{
-		return this.RoomsService.getPrivateRooms()
+		return this.RoomsService.getPrivateRooms();
 	}
 }

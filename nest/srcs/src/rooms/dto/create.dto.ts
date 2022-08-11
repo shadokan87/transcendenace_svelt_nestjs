@@ -3,7 +3,6 @@ export class createRoomDto {
 	@IsNotEmpty()
   name: string;
 
-	@IsNotEmpty()
   password: string;
 
   visibility: boolean;

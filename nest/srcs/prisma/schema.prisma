@@ -11,9 +11,8 @@ datasource db {
 }
 
 model User {
-  school_id   	Int @unique
+  school_id   	Int @id
   unique_name 	String @unique
-  nickname		String @unique @default("")
   username    	String
   displayName 	String
   first_name  	String
@@ -21,18 +20,23 @@ model User {
   profileUrl  	String
   email       	String
   photo       	String
-  status      	String
+  //channel
+  subscribedChannel Channel[] @relation(name: "subscribe")
+  ownerInChannel	Channel[] @relation
+  adminInChannel	Channel[] @relation(name: "admin")
+  //friends
   friends     	Int[]
-  subscribedRooms	Int[]
   pendingFriends	Int[]
   bans			Int[]
+  //profile
   Stats       	Stats?
   match_history Game[]
-	useIntraPhoto Boolean @default(true)
+  status      	String
+  nickname		String @unique @default("")
+  useIntraPhoto Boolean @default(true)
+  avatar String @default("user-default")
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt 
-
-	chans Channel[]
   // @@map("users")
 }
 
@@ -63,10 +67,12 @@ model Channel {
 	avatar	String	@default("default-channel")
 	password String @default("")
 	visibility Boolean
-	admins	Int[]
   	UserId          Int
   	owner           User @relation(fields: [UserId], references: [school_id])
 	Posts		Post[]
+	subscribedUsers User[] @relation(name: "subscribe")
+	bannedUsers		Int[]
+	admins			User[] @relation(name: "admin")
 }
 
 model Post {

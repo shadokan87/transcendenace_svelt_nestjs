@@ -1,35 +1,43 @@
 <script lang="ts" type="module" src="qs">
 	import { onBoard, profile } from "../../stores/loginStore";
+	import { msg, err } from "../../stores/alertStore.js"
+	import { Confetti } from "svelte-confetti";
 	import axios from "axios";
 
 	let onboard = false;
+	let errors: string[] = [];
+	let messages: string[] = [];
 	let inputNick: string = "";
 	let myprofile = {};
 	let step: number = 1;
+	msg.subscribe(val => messages = val);
+	err.subscribe(val => errors = val);
 	onBoard.subscribe( val => onboard = val);
 	profile.subscribe( val =>  myprofile = val);
 	console.log(profile);
-axios.defaults.headers.common = {
+	axios.defaults.headers.common = {
   "Content-Type": "application/json"
 }
-	const func = () => {
-		onBoard.update(onBoard => false);
-	};
 	const checkNick = async () => {
 		console.log(inputNick);
 		if (inputNick == "")
+		{
+			errors.push("Nickname cannot be empty.");
+			err.update(err => errors);
 			return ;
+			}
 		await axios.patch("http://localhost:3000/users/change_nickname", {val: inputNick} )
 		.then( (res) => {
-			console.log(res);
-			if (res.data == inputNick)
-			{
+				messages.push("Welcome " + inputNick + " !");
+				msg.update(msg => messages);
 				myprofile.nickname = inputNick;
 				profile.update(profile => myprofile);
 				onBoard.update(onBoard => false);
-			}
+				step = 0;
 		})
 		.catch( (res) => {
+			errors.push("Nickname already taken.");
+			err.update(err => errors);
 			console.log(res);
 		});
 		inputNick = "";
@@ -42,7 +50,7 @@ axios.defaults.headers.common = {
 	}
 </script>
 <main>
-	<h1 id="title" on:click={func}>Welcome <span id="login">{myprofile.username}</span> !</h1>
+	<h1 id="title">Welcome <span id="login">{myprofile.username}</span> !</h1>
 	{#if step == 1}
 		<div class="nickNameWrapper">
 			<h1 id="getNick">Please enter your nickname</h1>
@@ -84,7 +92,6 @@ h1
 }
 #title
 	{
-	cursor: pointer;
 	/* font-family: 'Fredoka One', cursive; */
 	font-size: 3em;
 	text-align: center;

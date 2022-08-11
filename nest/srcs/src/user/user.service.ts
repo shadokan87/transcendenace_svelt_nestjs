@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdateStatusDto, UploadAvatarDto, UniqueNameDto, nickDto } from './dto';
 
@@ -90,7 +90,10 @@ export class UserService {
                 },
             });
             if (check_nick)
-                return "";
+                	throw new HttpException({
+					status: HttpStatus.CONFLICT,
+					error: "Nickname \"${dto.val}\" is taken.",
+				}, HttpStatus.CONFLICT);
             const user = await this.prisma.user.findUnique({
                 where: {
                     school_id: userId,
