@@ -4,7 +4,6 @@ import { createRoomDto } from "./dto/create.dto";
 import { AuthenticateGuard } from "src/auth/guard/42.guard";
 import { RoomsService } from './rooms.service';
 import { PrismaService } from 'src/prisma/prisma.service'
-import {channel} from 'diagnostics_channel';
 
 @UseGuards(AuthenticateGuard)
 @Controller('rooms')
@@ -23,24 +22,7 @@ export class RoomsController {
 	addAdmin( @Req() req: Request,
 			   @Body() dto: {chanId: number, school_id: number}) {
 			dto = req.body;
-			return this.RoomsService.addAdmin(dto.chanId, dto.school_id);
-	}
-	@Post("banUser")
-	banUser( @Req() req: Request,
-			   @Body() dto: {school_id: number, chanId: number}) {
-			dto = req.body;
-			return this.RoomsService.banUser(dto.school_id, dto.chanId);
-	}
-	@Post("unbanUser")
-	un_banUser( @Req() req: Request,
-			   @Body() dto: {school_id: number, chanId: number}) {
-			dto = req.body;
-			return this.RoomsService.unbanUser(dto.school_id, dto.chanId);
-	}
-	@Get("Admin")
-	getAdmin( @Req() req: Request,
-			   @Body() dto: {chanId: number}) {
-			// return this.RoomsService.getAdmins(dto.chanId);
+			// return this.RoomsService.addAdmin(dto.chanId, dto.school_id);
 			return dto;
 		};
 	@Get("public")

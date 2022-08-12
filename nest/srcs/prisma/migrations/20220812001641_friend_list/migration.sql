@@ -9,7 +9,6 @@ CREATE TABLE "User" (
     "profileUrl" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "photo" TEXT NOT NULL,
-    "friends" INTEGER[],
     "pendingFriends" INTEGER[],
     "bans" INTEGER[],
     "status" TEXT NOT NULL,
@@ -20,6 +19,15 @@ CREATE TABLE "User" (
     "updateAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("school_id")
+);
+
+-- CreateTable
+CREATE TABLE "friendList" (
+    "id" SERIAL NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "friendList_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -51,7 +59,6 @@ CREATE TABLE "Channel" (
     "password" TEXT NOT NULL DEFAULT '',
     "visibility" BOOLEAN NOT NULL,
     "UserId" INTEGER NOT NULL,
-    "bannedUsers" INTEGER[],
 
     CONSTRAINT "Channel_pkey" PRIMARY KEY ("id")
 );
@@ -67,6 +74,12 @@ CREATE TABLE "Post" (
 
 -- CreateTable
 CREATE TABLE "_subscribe" (
+    "A" INTEGER NOT NULL,
+    "B" INTEGER NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "_banned" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL
 );
@@ -99,10 +112,19 @@ CREATE UNIQUE INDEX "_subscribe_AB_unique" ON "_subscribe"("A", "B");
 CREATE INDEX "_subscribe_B_index" ON "_subscribe"("B");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "_banned_AB_unique" ON "_banned"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_banned_B_index" ON "_banned"("B");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "_admin_AB_unique" ON "_admin"("A", "B");
 
 -- CreateIndex
 CREATE INDEX "_admin_B_index" ON "_admin"("B");
+
+-- AddForeignKey
+ALTER TABLE "friendList" ADD CONSTRAINT "friendList_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("school_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Stats" ADD CONSTRAINT "Stats_UserId_fkey" FOREIGN KEY ("UserId") REFERENCES "User"("school_id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -121,6 +143,12 @@ ALTER TABLE "_subscribe" ADD CONSTRAINT "_subscribe_A_fkey" FOREIGN KEY ("A") RE
 
 -- AddForeignKey
 ALTER TABLE "_subscribe" ADD CONSTRAINT "_subscribe_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("school_id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_banned" ADD CONSTRAINT "_banned_A_fkey" FOREIGN KEY ("A") REFERENCES "Channel"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_banned" ADD CONSTRAINT "_banned_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("school_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_admin" ADD CONSTRAINT "_admin_A_fkey" FOREIGN KEY ("A") REFERENCES "Channel"("id") ON DELETE CASCADE ON UPDATE CASCADE;

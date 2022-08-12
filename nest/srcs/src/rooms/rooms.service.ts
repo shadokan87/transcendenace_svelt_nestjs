@@ -1,12 +1,52 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { Prisma } from '@prisma/client';
 import { createRoomDto } from './dto';
+
+const chanNotFoundError = (chanId: number) => {
+	throw new HttpException({
+	status: HttpStatus.NOT_FOUND,
+	error: 'Channel width id ' + chanId + ' does not exists.',
+		}, HttpStatus.NOT_FOUND);
+};
+
+const userNotFoundError = (userId: number) => {
+	throw new HttpException({
+	status: HttpStatus.NOT_FOUND,
+	error: 'User width id ' + userId + ' does not exists.',
+		}, HttpStatus.NOT_FOUND);
+};
+
+const isPrismaNotFound = (e: any) => {
+	return ((e instanceof Prisma.PrismaClientKnownRequestError
+			&& e.code == 'P2025' || e.code == 'P2016'));
+};
+
+const isPrismaConnectError = (e: any) => {
+	return ((e instanceof Prisma.PrismaClientKnownRequestError
+			&& e.code == 'P2018'));
+};
+
+const unexpectedError = () => {
+	throw new HttpException({
+	status: HttpStatus.BAD_REQUEST,
+	error: "An unexpectedError has occured. Please try again.",
+		}, HttpStatus.BAD_REQUEST);
+};
+
+const ConflictError = (error: string) => {
+	throw new HttpException({
+		status: HttpStatus.CONFLICT,
+		error: error,
+	}, HttpStatus.CONFLICT);
+};
 
 @Injectable()
 export class RoomsService {
     constructor(
         private prisma: PrismaService,
         ) {}
+
 		async getUserById(userId: any) {
 			const id = Number(userId);
 
@@ -25,16 +65,171 @@ export class RoomsService {
 		}
 		async addAdmin(chanId: number, school_id: number)
 		{
-			const chan = await this.prisma.channel.findUnique({
+			try{ // grant user admin access in for ${chanId}
+					let updatedUser = await this.prisma.user.update({
+						where: {
+							school_id: school_id,
+						},
+						include: {
+							adminInChannel: true,
+						},
+						data: {
+							adminInChannel: {
+								connect: [{id: chanId}],
+							},
+						},
+					});
+				return (updatedUser);
+			} catch(e) { // user not found / channel not found || unexpectedError
+					if (isPrismaNotFound(e)) {
+						if (e.code == 'P2016')
+							userNotFoundError(school_id);
+						else
+							chanNotFoundError(chanId);
+					}
+					else
+						unexpectedError();
+				return (e.code);
+			}
+		}
+		async unSubscribeToRoom(school_id: number, chanId: number)
+		{
+			try{ // add ${chanId} in user's Channel list
+					let updatedUser = await this.prisma.user.update({
+						where: {
+							school_id: school_id,
+						},
+						include: {
+							subscribedChannel: true,
+						},
+						data: {
+							subscribedChannel: {
+								disconnect: [{id: chanId}],
+							},
+						},
+					});
+				return (updatedUser);
+			} catch(e) { // user not found / channel not found || unexpectedError
+					if (isPrismaNotFound(e)) {
+						if (e.code == 'P2016')
+							userNotFoundError(school_id);
+						else
+							chanNotFoundError(chanId);
+					}
+					else
+						unexpectedError();
+				return (e.code);
+			}
+		}
+		async subscribeToRoom(school_id: number, chanId: number)
+		{
+			try{ // add ${chanId} in user's Channel list
+					let updatedUser = await this.prisma.user.update({
+						where: {
+							school_id: school_id,
+						},
+						include: {
+							subscribedChannel: true,
+						},
+						data: {
+							subscribedChannel: {
+								connect: [{id: chanId}],
+							},
+						},
+					});
+				return (updatedUser);
+			} catch(e) { // user not found / channel not found || unexpectedError
+					if (isPrismaNotFound(e)) {
+						if (e.code == 'P2016')
+							userNotFoundError(school_id);
+						else
+							chanNotFoundError(chanId);
+					}
+					else
+						unexpectedError();
+				return (e.code);
+			}
+		}
+		async banUser(school_id: number, chanId: number)
+		{
+			let updatedUser = await this.prisma.user.update({
+					where: {
+						school_id: school_id,
+					},
+					include: {
+						bannedInChannel: true,
+					},
+					data: {
+						bannedInChannel: {
+							connect: [{id: chanId}],
+						},
+					},
+				});
+			this.unSubscribeToRoom(school_id, chanId);
+			return (updatedUser);
+		}
+		async unbanUser(school_id: number, chanId: number)
+		{
+			let updatedUser = await this.prisma.user.update({
+					where: {
+						school_id: school_id,
+					},
+					include: {
+						bannedInChannel: true,
+					},
+					data: {
+						bannedInChannel: {
+							disconnect: [{id: chanId}],
+						},
+					},
+				});
+			return (updatedUser);
+		}
+		async removeAdmin(chanId: number, school_id: number)
+		{
+			try{ // grant user admin access in for ${chanId}
+					let updatedUser = await this.prisma.user.update({
+						where: {
+							school_id: school_id,
+						},
+						include: {
+							adminInChannel: true,
+						},
+						data: {
+							adminInChannel: {
+								disconnect: [{id: chanId}],
+							},
+						},
+					});
+				return (updatedUser);
+			} catch(e) { // user not found / channel not found || unexpectedError
+					if (isPrismaNotFound(e)) {
+						if (e.code == 'P2016')
+							userNotFoundError(school_id);
+						else
+							chanNotFoundError(chanId);
+					}
+					else
+						unexpectedError();
+				return (e.code);
+			}
+
+		}
+		async getAdmins(chanId: number)
+		{
+			const admins = await this.prisma.channel.findUnique({
 				where: {
 					id: chanId,
 				},
 				select: {
-					admins: true,
+					admins : {
+						select: {
+							school_id: true
+						},
+					},
 				},
 			});
-			const user = await this.getUserById(school_id);
-			chan.admins.push(school_id);
+			return admins;
 		}
 		async changeOwner(chanId: number, school_id: number)
 		{
@@ -75,21 +270,18 @@ export class RoomsService {
 		async create(newRoom: createRoomDto) {
 			const roomAlreadyExist = await this.getRoomByName(newRoom.name);
 			if (roomAlreadyExist)
-				throw new HttpException({
-					status: HttpStatus.CONFLICT,
-					error: "Room: ${newRoom.name} already exists",
-				}, HttpStatus.CONFLICT);
+				ConflictError('Channel with name ' + newRoom.name + ' already exists.');
 			try{
 				const chan = await this.prisma.channel.create({
 					data: {
 						...newRoom,
 					},
 				});
-				await this.addAdmin(chan.id, newRoom.UserId);
-				await this.changeOwner(chan.id, newRoom.UserId);
-				return (chan);
+				this.addAdmin(chan.id, chan.UserId);
+				this.subscribeToRoom(chan.UserId, chan.id);
 			}
-				catch(e) { return (e.message) }
+				catch(e) {
+					unexpectedError();
+				}
 			}
-
 }
